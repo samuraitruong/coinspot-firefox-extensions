@@ -4,7 +4,7 @@ function insertChart(d, header) {
     let label = header || 'Last ' + d + ' Days';
 
     if (index > 0) {
-      label = `<img alt="chart" src="http://localhost:3000/chart?coin=${el.getAttribute(
+      label = `<img alt="chart" src="https://coinspot-chart.herokuapp.com/chart?coin=${el.getAttribute(
         'data-coin',
       )}&width=100&height=50&period=${d}&lineWidth=0.7" />`;
     }
@@ -12,5 +12,6 @@ function insertChart(d, header) {
     el.appendChild(td);
   });
 }
+
 // insertChart(3);
 // insertChart(7);

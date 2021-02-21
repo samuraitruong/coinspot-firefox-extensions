@@ -6,10 +6,13 @@
   "icons": {
     "48": "icons/icon48.png"
   },
+  "permissions": [
+    "activeTab"
+  ],
   "browser_action": {
     "default_icon": "icons/32x32.png",
     "default_title": "Coinspot Helper",
-    "default_popup": "popup/choose_beast.html"
+    "default_popup": "popup/default.html"
   },
   "content_scripts": [
     {
@@ -17,7 +20,7 @@
         "https://www.coinspot.com.au/sell/*"
       ],
       "js": [
-        "coinspot_sell.js"
+        "/content_scripts/coinspot_sell.js"
       ]
     },
     {
@@ -25,7 +28,7 @@
         "https://www.coinspot.com.au/tradecoins*"
       ],
       "js": [
-        "coinspot_tradecoins.js"
+        "/content_scripts/coinspot_tradecoins.js"
       ]
     }
   ]
