@@ -1,0 +1,25 @@
+{
+
+    "manifest_version": 2,
+    "name": "My Coinspot helper",
+    "version": "1.0",
+  
+    "description": "Auto click on sell-max button on coinspot",
+  
+    "icons": {
+      "48": "icons/icon48.png"
+    },
+    "browser_action": {
+        "default_icon": "icons/32x32.png",
+        "default_title": "Coinspot Helper",
+        "default_popup": "popup/choose_beast.html"
+      },
+    
+    "content_scripts": [
+      {
+        "matches": ["https://www.coinspot.com.au/sell/*"],
+        "js": ["coinspot.js"]
+      }
+    ]
+  
+  }
