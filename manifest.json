@@ -7,12 +7,16 @@
     "48": "icons/icon48.png"
   },
   "permissions": [
-    "activeTab"
+    "activeTab",
+    "storage"
   ],
   "browser_action": {
     "default_icon": "icons/32x32.png",
     "default_title": "Coinspot Helper",
     "default_popup": "popup/default.html"
+  },
+  "options_ui": {
+    "page": "setting/ui.html"
   },
   "content_scripts": [
     {

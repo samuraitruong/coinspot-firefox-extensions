@@ -1,0 +1,10 @@
+body {
+  border: solid 1px red;
+}
+.info_floating {
+  position: fixed;
+  right: 30px;
+  width: 100px;
+  height: 100px;
+  background: green;
+}
