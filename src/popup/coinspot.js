@@ -1,5 +1,5 @@
 function runScriptOnContentPage(days) {
-  if (chrome.tags) {
+  if (chrome) {
     chrome.tabs.executeScript(
       {
         file: '/content_scripts/coinspot_1.js',
