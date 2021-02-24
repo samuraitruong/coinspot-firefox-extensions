@@ -35,5 +35,10 @@
         "/content_scripts/coinspot_tradecoins.js"
       ]
     }
-  ]
+  ],
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "samuraitruong@myaddon.in"
+    }
+  }
 }
