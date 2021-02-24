@@ -1,3 +1,16 @@
+## what it does
+- add small chart on this list view
+- auto add mini chart on buy/sell
+- auto click max-sell button when you are on sell page (just for my purpose)
+
+[logo]: blob:https://pasteboard.co/cfc03b7a-4902-433b-996b-9e81aba70547 
+
+
+## WIP
+- Add setting page
+- Allow auto configure and send alert (telegram)
+- Allow auto trade
+- 
 ## Install for firefox
 - Go to about:debuging on firefox
 - click on `This Firefox`
