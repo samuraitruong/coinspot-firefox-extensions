@@ -1,7 +1,7 @@
 body {
   border: solid 1px red;
 }
-.info_floating {
+.info_floatting {
   position: fixed;
   right: 30px;
   width: 100px;

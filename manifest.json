@@ -8,7 +8,8 @@
   },
   "permissions": [
     "activeTab",
-    "storage"
+    "storage",
+    "tabs"
   ],
   "browser_action": {
     "default_icon": "icons/32x32.png",
@@ -24,6 +25,7 @@
         "https://www.coinspot.com.au/sell/*"
       ],
       "js": [
+        "/content_scripts/coinspot_quick_charts.js",
         "/content_scripts/coinspot_sell.js"
       ]
     },
@@ -33,6 +35,14 @@
       ],
       "js": [
         "/content_scripts/coinspot_tradecoins.js"
+      ]
+    },
+    {
+      "matches": [
+        "https://www.coinspot.com.au/buy/*"
+      ],
+      "js": [
+        "/content_scripts/coinspot_quick_charts.js"
       ]
     }
   ],
