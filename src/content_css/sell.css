@@ -1,0 +1,19 @@
+.info_floatting {
+  position: fixed;
+  right: 10px;
+  width: 300px;
+  top: 170px;
+  padding-top: 20px;
+}
+
+.info_floatting div {
+  border-bottom: #ddd dashed 1px;
+}
+.info_floatting h3 {
+  text-align: center;
+  width: 100%;
+}
+.info_floatting.left-panel {
+  right: initial;
+  left: 10px;
+}

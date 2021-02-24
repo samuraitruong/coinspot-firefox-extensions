@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
-  "name": "My Coinspot helper",
+  "name": "Coinspot Enhancement UI",
   "version": "1.0",
-  "description": "Auto click on sell-max button on coinspot",
+  "description": "Some set of utility to improve Coinspot UI that help daily task on trading",
   "icons": {
     "48": "icons/icon48.png"
   },
@@ -27,6 +27,9 @@
       "js": [
         "/content_scripts/coinspot_quick_charts.js",
         "/content_scripts/coinspot_sell.js"
+      ],
+      "css": [
+        "/content_css/sell.css"
       ]
     },
     {
@@ -43,6 +46,9 @@
       ],
       "js": [
         "/content_scripts/coinspot_quick_charts.js"
+      ],
+      "css": [
+        "/content_css/sell.css"
       ]
     }
   ],
