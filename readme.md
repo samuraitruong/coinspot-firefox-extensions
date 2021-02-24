@@ -3,13 +3,13 @@
 - auto add mini chart on buy/sell
 - auto click max-sell button when you are on sell page (just for my purpose)
 
-[screenshot2](https://github.com/samuraitruong/coinspot-firefox-extensions/blob/master/screenshots/screenshot1.png?raw=true)
+![screenshot2](https://github.com/samuraitruong/coinspot-firefox-extensions/blob/master/screenshots/screenshot1.png?raw=true)
 
 
-[screenshot2](https://github.com/samuraitruong/coinspot-firefox-extensions/blob/master/screenshots/screenshot2.png?raw=true)
+![screenshot2](https://github.com/samuraitruong/coinspot-firefox-extensions/blob/master/screenshots/screenshot2.png?raw=true)
 
 
-[screenshot2](https://github.com/samuraitruong/coinspot-firefox-extensions/blob/master/screenshots/screenshot3.png?raw=true)
+![screenshot2](https://github.com/samuraitruong/coinspot-firefox-extensions/blob/master/screenshots/screenshot3.png?raw=true)
 
 
 
