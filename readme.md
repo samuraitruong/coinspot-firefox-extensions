@@ -1,4 +1,4 @@
-## what is does
+## what it does
 - add small chart on this list view
 - auto add mini chart on buy/sell
 - auto click max-sell button when you are on sell page (just for my purpose)
