@@ -1,0 +1,11 @@
+.virtual-div {
+  display: none;
+}
+.value-change {
+  margin-left: 15px;
+  color: green;
+}
+
+.value-change.negative {
+  color: red;
+}
