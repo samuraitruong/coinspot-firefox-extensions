@@ -41,6 +41,7 @@ const coin = document.location.href.split('/').pop().replace('#', '');
 const rightPanel = createFloattingDiv('right-panel');
 
 const leftPanel = createFloattingDiv('left-panel');
+
 function addWalletMenu(coin) {
   const div = document.createElement('div');
   div.setAttribute('class', 'col-xs-2 menuheight');
@@ -50,6 +51,30 @@ function addWalletMenu(coin) {
 getWaletPage(coin, (data) => {
   if (data.orders.length > 0) {
     addMiniChart(coin, data.orders[0].date, rightPanel);
+    console.log(data.orders);
+    const sells = data.orders
+      .filter((x) => x.type === 'Sell')
+      .map((x) => x.amount);
+    const currentInvest = data.orders
+      .filter((x) => !sells.includes(x.amount))
+      .map((x) => +x.total.replace('AUD', ''))
+      .reduce((a, b) => a + b, 0);
+    const insertDiv = (hostClass) => {
+      const infoDiv = document.createElement('div');
+      infoDiv.style.color = 'green';
+      infoDiv.innerText =
+        'Invested Amount: ' +
+        currentInvest.toLocaleString('en-AU', {
+          style: 'currency',
+          currency: 'AUD',
+        }) +
+        ' AUD';
+      document
+        .querySelector(hostClass + ' h3')
+        .parentElement.appendChild(infoDiv);
+    };
+    insertDiv('.howmuchcoin');
+    insertDiv('.howmuchaud');
   }
 });
 addWalletMenu(coin);
@@ -58,8 +83,11 @@ addMiniChart(coin, 7, rightPanel);
 addMiniChart(coin, 14, rightPanel);
 addMiniChart(coin, 30, rightPanel);
 
+addMiniChart(coin, 45, rightPanel);
+
 addMiniChart(coin, 60, leftPanel);
 
 addMiniChart(coin, 90, leftPanel);
+addMiniChart(coin, 120, leftPanel);
 addMiniChart(coin, 180, leftPanel);
 addMiniChart(coin, 365, leftPanel);

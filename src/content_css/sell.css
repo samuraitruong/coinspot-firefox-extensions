@@ -2,7 +2,7 @@
   position: fixed;
   right: 0px;
   width: 300px;
-  top: 150px;
+  top: 170px;
   padding-top: 20px;
   padding-right: 10px;
   background: #fff;
@@ -12,17 +12,33 @@
   border-bottom: #ddd dashed 1px;
 }
 .info_floatting h3 {
+  cursor: pointer;
   text-align: center;
-  width: 100%;
+  transform: rotate(270deg);
+  position: fixed;
+  right: -45px;
+  top: 300px;
+  background: rgba(100, 100, 100, 0.2);
+  color: #fff !important;
+  padding-left: 20px;
+  padding-right: 20px;
+  padding: 5px;
+}
+.info_floatting h3:hover {
+  background: rgba(100, 100, 100, 0.9);
 }
 .info_floatting.left-panel {
-  right: initial;
   left: 10px;
+}
+.info_floatting.left-panel h3 {
+  right: initial;
+  right: initial;
+  left: -45px;
 }
 .wallet-page {
   display: none;
 }
-@media only screen and (max-width: 900px) {
+@media only screen and (max-width: 1000px) {
   .info_floatting {
     display: none;
   }

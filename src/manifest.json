@@ -39,6 +39,14 @@
     },
     {
       "matches": [
+        "https://www.coinspot.com.au/my/wallets"
+      ],
+      "js": [
+        "/content_scripts/wallet.js"
+      ]
+    },
+    {
+      "matches": [
         "https://www.coinspot.com.au/tradecoins*"
       ],
       "js": [
