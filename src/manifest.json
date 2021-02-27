@@ -19,6 +19,11 @@
   "options_ui": {
     "page": "setting/ui.html"
   },
+  "background": {
+    "scripts": [
+      "background/coin.js"
+    ]
+  },
   "content_scripts": [
     {
       "matches": [

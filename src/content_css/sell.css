@@ -1,9 +1,11 @@
 .info_floatting {
   position: fixed;
-  right: 10px;
+  right: 0px;
   width: 300px;
-  top: 170px;
+  top: 150px;
   padding-top: 20px;
+  padding-right: 10px;
+  background: #fff;
 }
 
 .info_floatting div {
@@ -16,4 +18,12 @@
 .info_floatting.left-panel {
   right: initial;
   left: 10px;
+}
+.wallet-page {
+  display: none;
+}
+@media only screen and (max-width: 900px) {
+  .info_floatting {
+    display: none;
+  }
 }
