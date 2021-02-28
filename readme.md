@@ -33,3 +33,5 @@
 - additional step, enable Icon to use browser action
   
 
+## Permanently install for firefox
+- Download file in packages/ folder and click it

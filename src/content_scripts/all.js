@@ -1,10 +1,11 @@
 function toNumber(x) {
+  if (!isNaN(x)) return x;
   if (x === 0) return 0;
   return +x.replace('$', '').replace(',', '').replace('AUD', '');
 }
-function formatNumber(numValue) {
+function formatNumber(numValue, prefix = true) {
   return (
-    (numValue > 0 ? '+ ' : '') +
+    (prefix && numValue > 0 ? '+ ' : '') +
     numValue.toLocaleString('en-AU', {
       style: 'currency',
       currency: 'AUD',
@@ -12,25 +13,18 @@ function formatNumber(numValue) {
     ' AUD'
   );
 }
-function getWallelValue(callback) {
-  fetch('https://www.coinspot.com.au/my/wallets')
-    .then((x) => x.text())
-    .then((html) => {
-      var div = document.createElement('div');
-      div.setAttribute('class', 'virtual-div');
-      div.innerHTML = html;
-      document.querySelector('body').appendChild(div);
-      const walleValue = document.querySelector('.wallets .panel-subheading b')
-        .innerText;
-      const lastValue = localStorage.getItem('wallet_value') || 0;
-      const change = toNumber(walleValue) - toNumber(lastValue);
-      localStorage.setItem('wallet_value', walleValue);
-
-      callback(walleValue, change);
-    });
+function fetchDashboadData(typeframe, callback) {
+  fetch('https://www.coinspot.com.au/my/dbgraphdata?timeframe=' + typeframe)
+    .then((res) => res.json())
+    .then(callback);
 }
+function showWalletValue(data) {
+  const walleValue = +data.wallet;
 
-getWallelValue((value, change) => {
+  const lastValue = localStorage.getItem('wallet_value') || 0;
+  const change = toNumber(walleValue) - toNumber(lastValue);
+  localStorage.setItem('wallet_value', walleValue);
+
   const html = document.querySelector('.userheader .headervalue').parentElement
     .innerHTML;
   const style = change < 0 ? 'negative' : 'positive';
@@ -40,5 +34,11 @@ getWallelValue((value, change) => {
       ? `<span class='value-change ${style}'>${formatNumber(change)}</span>`
       : '';
   document.querySelector('.userheader .headervalue').parentElement.innerHTML =
-    html + '<br/> <span> Wallet value: ' + value + '</span>' + changeHtml;
-});
+    html +
+    '<br/> <span> Wallet value: ' +
+    formatNumber(walleValue, false) +
+    '</span>' +
+    changeHtml;
+}
+
+fetchDashboadData('D', showWalletValue);
