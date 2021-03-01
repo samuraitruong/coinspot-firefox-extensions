@@ -43,3 +43,6 @@
     display: none;
   }
 }
+.quickcharts-hide div {
+  display: none;
+}

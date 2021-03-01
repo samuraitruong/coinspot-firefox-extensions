@@ -1,9 +1,21 @@
 function createFloattingDiv(className) {
   const div = document.createElement('div');
-  div.innerHTML = '<h3>Quick charts</h3>';
+  const h3 = document.createElement('h3');
+  h3.innerText = 'Quick charts';
+  div.appendChild(h3);
   div.setAttribute('class', 'info_floatting ' + className);
   document.querySelector('body').appendChild(div);
-
+  h3.addEventListener('click', () => {
+    let currentClassName = div.getAttribute('class');
+    if (currentClassName.includes('quickcharts-hide')) {
+      div.setAttribute(
+        'class',
+        currentClassName.replace('quickcharts-hide', ''),
+      );
+    } else {
+      div.setAttribute('class', currentClassName + ' quickcharts-hide');
+    }
+  });
   return div;
 }
 
@@ -22,18 +34,20 @@ function getWaletPage(coin, callback) {
       div.innerHTML = html;
       document.querySelector('body').appendChild(div);
       const orderHistory = document.querySelectorAll('table')[2];
-      const orders = [];
-      orderHistory.querySelectorAll('tr').forEach((el) => {
-        const values = [];
-        el.querySelectorAll('td').forEach((e) =>
-          values.push(e.innerText.trim()),
-        );
-        if (values.length > 0) {
-          const [date, type, amount, rate, total] = values;
-          orders.push({ date, type, amount, rate, total });
-        }
-      });
-      callback({ orders });
+      if (orderHistory) {
+        const orders = [];
+        orderHistory.querySelectorAll('tr').forEach((el) => {
+          const values = [];
+          el.querySelectorAll('td').forEach((e) =>
+            values.push(e.innerText.trim()),
+          );
+          if (values.length > 0) {
+            const [date, type, amount, rate, total] = values;
+            orders.push({ date, type, amount, rate, total });
+          }
+        });
+        callback({ orders });
+      }
     });
 }
 const coin = document.location.href.split('/').pop().replace('#', '');
@@ -51,7 +65,6 @@ function addWalletMenu(coin) {
 getWaletPage(coin, (data) => {
   if (data.orders.length > 0) {
     addMiniChart(coin, data.orders[0].date, rightPanel);
-    console.log(data.orders);
     const sells = data.orders
       .filter((x) => x.type === 'Sell')
       .map((x) => x.amount);
