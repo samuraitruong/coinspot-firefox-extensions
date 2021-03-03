@@ -16,7 +16,9 @@ function formatNumber(numValue, prefix = true) {
 }
 
 function fetchDashboadData(typeframe, callback) {
-  fetch('https://www.coinspot.com.au/my/dbgraphdata?timeframe=' + typeframe)
+  fetch(
+    'https://www.coinspot.com.au/my/charts/portfolio?timeframe=' + typeframe,
+  )
     .then((res) => res.json())
     .then(callback);
 }
@@ -29,14 +31,12 @@ function showWalletValue(data) {
       .querySelector('.userheader .headervalue')
       .parentElement.appendChild(wrapper);
   }
-  const walleValue = +data.wallet;
+  const walleValue = data.coinsValue;
 
   const lastValue = localStorage.getItem('wallet_value') || 0;
   const change = toNumber(walleValue) - toNumber(lastValue);
   localStorage.setItem('wallet_value', walleValue);
 
-  const html = document.querySelector('.userheader .headervalue').parentElement
-    .innerHTML;
   const style = change < 0 ? 'negative' : 'positive';
 
   const changeHtml =
@@ -59,5 +59,3 @@ setInterval(() => {
 // chrome.runtime.onMessage.addListener(function (request, sender) {
 //   console.log('message from background', request.message);
 // });
-
-// chrome.extension.sendRequest({ message: 'test' });
