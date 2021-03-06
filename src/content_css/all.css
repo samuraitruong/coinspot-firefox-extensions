@@ -9,3 +9,17 @@
 .value-change.negative {
   color: red;
 }
+
+.order {
+  color: rgb(77, 75, 75);
+  font-size: 11px;
+  display: block;
+}
+
+.order.Profit {
+  color: #25ce6c;
+}
+
+.order.Loss {
+  color: #e25c1e;
+}
