@@ -1,9 +1,14 @@
 .virtual-div {
   display: none;
 }
+
 .value-change {
   margin-left: 15px;
   color: green;
+}
+
+#virtualbacon {
+  display: none;
 }
 
 .value-change.negative {
@@ -15,11 +20,33 @@
   font-size: 11px;
   display: block;
 }
-
+.filter-wrapper input {
+  margin-left: 5px !important;
+}
 .order.Profit {
   color: #25ce6c;
 }
 
 .order.Loss {
   color: #e25c1e;
+}
+
+.addon-filtered-order tbody tr {
+  display: none !important;
+}
+.addon-filtered-order tbody tr.has-order {
+  display: table-row !important;
+}
+.modified {
+  width: 300px;
+}
+.addon-filters {
+  display: inline;
+  float: left;
+  margin-top: 11px;
+}
+.filter-wrapper {
+  width: 50%;
+  float: left;
+  margin-top: 8px;
 }

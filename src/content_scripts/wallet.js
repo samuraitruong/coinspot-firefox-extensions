@@ -1,4 +1,7 @@
 const mywallet = JSON.parse(localStorage.getItem('mywallet') || '{}');
+function addClass(el, className) {
+  el.setAttribute('class', el.getAttribute('class') + ' ' + className);
+}
 function eachRow(callback) {
   document.querySelectorAll('table tbody tr').forEach((tr) => {
     const coin = tr.getAttribute('data-coin');
@@ -64,7 +67,6 @@ function getOpenOrders(callback) {
     .then((html) => {
       const div = document.createElement('div');
       div.id = 'virtualbacon';
-      // div.style = 'display: none';
       div.innerHTML = html;
       document.querySelector('body').appendChild(div);
 
@@ -87,6 +89,7 @@ function withOpenOrder(coin, tr, orders) {
   if (!coin) return;
   const findCoin = orders.find((x) => x.coin === coin.toUpperCase());
   if (findCoin) {
+    tr.setAttribute('class', tr.getAttribute('class') + ' has-order');
     const tds = tr.querySelectorAll('td');
     const link = document.createElement('a');
     link.setAttribute('class', 'order ' + findCoin.type);
@@ -97,12 +100,34 @@ function withOpenOrder(coin, tr, orders) {
       e.cancelBubble = true;
     });
     tds[tds.length == 6 ? 4 : 3].appendChild(link);
-  }
-  else {
-    
+  } else {
   }
 }
 
+function addOrderFilter() {
+  const row = document.querySelector('.hidezero').parentElement;
+  addClass(row, 'modified');
+  const el = document.createElement('div');
+  addClass(el, 'filter-wrapper');
+  const chk = document.createElement('input', { type: 'checkbox' });
+  chk.setAttribute('type', 'checkbox');
+  el.innerText = 'Show only orders';
+  chk.addEventListener('change', (e) => {
+    console.log('channed', e.target.checked);
+    const panel = document.querySelector('body');
+    const className = panel.getAttribute('class');
+    if (e.target.checked) {
+      panel.setAttribute('class', className + ' addon-filtered-order');
+    } else {
+      panel.setAttribute(
+        'class',
+        className.replace(' addon-filtered-order', ''),
+      );
+    }
+  });
+  el.appendChild(chk);
+  row.appendChild(el);
+}
 eachRow((coin, tr) => addButton(coin, tr, 'sell'));
 eachRow((coin, tr) => addButton(coin, tr, 'buy'));
 setTimeout(() => {
@@ -113,3 +138,5 @@ setTimeout(() => {
     eachRow((coin, tr) => withOpenOrder(coin, tr, orders));
   });
 }, 1000);
+
+addOrderFilter();
