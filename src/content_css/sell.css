@@ -46,3 +46,18 @@
 .quickcharts-hide div {
   display: none;
 }
+
+.history-prices {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: dotted 0.5px #444;
+  color: rgb(114, 111, 111);
+  font-size: 11px;
+}
+.history-prices.negative {
+  color: rgb(207, 8, 8);
+}
+.history-prices:last-child {
+  min-width: 40px;
+  display: block;
+}

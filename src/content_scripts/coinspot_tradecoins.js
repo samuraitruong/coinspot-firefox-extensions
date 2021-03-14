@@ -13,5 +13,26 @@ function insertChart(d, header) {
   });
 }
 
+function updateCoinsList() {
+  const list = [];
+  let index = 1;
+  eachRow((coin, tr) => {
+    const td = tr.querySelectorAll('td');
+    const item = {
+      coin,
+      cap: +td[3].getAttribute('data-value'),
+      capDisplay: td[3].innerText,
+      vol24: +td[4].getAttribute('data-value'),
+      vol24Display: td[4].innerText,
+      index,
+    };
+    index++;
+    list.push(item);
+  });
+  localStorage.setItem('coin_list', JSON.stringify(list));
+}
+
+updateCoinsList();
 // insertChart(3);
 // insertChart(7);
+eachRow(updateRank);

@@ -1,20 +1,11 @@
 function createFloattingDiv(className) {
-  const div = document.createElement('div');
+  const div = createElement('div', 'info_floatting ' + className);
   const h3 = document.createElement('h3');
   h3.innerText = 'Quick charts';
   div.appendChild(h3);
-  div.setAttribute('class', 'info_floatting ' + className);
   document.querySelector('body').appendChild(div);
   h3.addEventListener('click', () => {
-    let currentClassName = div.getAttribute('class');
-    if (currentClassName.includes('quickcharts-hide')) {
-      div.setAttribute(
-        'class',
-        currentClassName.replace('quickcharts-hide', ''),
-      );
-    } else {
-      div.setAttribute('class', currentClassName + ' quickcharts-hide');
-    }
+    toggleClass(div, 'quickcharts-hide');
   });
   return div;
 }
@@ -25,32 +16,7 @@ function addMiniChart(coin, d, panel) {
   panel.appendChild(chartDiv);
 }
 
-function getWaletPage(coin, callback) {
-  fetch('https://www.coinspot.com.au/my/wallet/' + coin)
-    .then((x) => x.text())
-    .then((html) => {
-      var div = document.createElement('div');
-      div.setAttribute('class', 'wallet-page');
-      div.innerHTML = html;
-      document.querySelector('body').appendChild(div);
-      const orderHistory = document.querySelectorAll('table')[2];
-      if (orderHistory) {
-        const orders = [];
-        orderHistory.querySelectorAll('tr').forEach((el) => {
-          const values = [];
-          el.querySelectorAll('td').forEach((e) =>
-            values.push(e.innerText.trim()),
-          );
-          if (values.length > 0) {
-            const [date, type, amount, rate, total] = values;
-            orders.push({ date, type, amount, rate, total });
-          }
-        });
-        callback({ orders });
-      }
-    });
-}
-const coin = document.location.href.split('/').pop().replace('#', '');
+const coin = currentCoin();
 
 const rightPanel = createFloattingDiv('right-panel');
 
@@ -62,6 +28,7 @@ function addWalletMenu(coin) {
   div.innerHTML = `<a href="/my/wallet/${coin}" class="btn fs-large">Wallet ${coin.toUpperCase()}</a>`;
   document.querySelector('.bssheader .row').appendChild(div);
 }
+
 getWaletPage(coin, (data) => {
   if (data.orders.length > 0) {
     addMiniChart(coin, data.orders[0].date, rightPanel);
@@ -75,13 +42,8 @@ getWaletPage(coin, (data) => {
     const insertDiv = (hostClass) => {
       const infoDiv = document.createElement('div');
       infoDiv.style.color = 'green';
-      infoDiv.innerText =
-        'Invested Amount: ' +
-        currentInvest.toLocaleString('en-AU', {
-          style: 'currency',
-          currency: 'AUD',
-        }) +
-        ' AUD';
+      infoDiv.innerText = 'Invested Amount: ' + formatCurrency(currentInvest);
+
       document
         .querySelector(hostClass + ' h3')
         .parentElement.appendChild(infoDiv);

@@ -21,6 +21,9 @@ button:hover {
 }
 .custom-button {
   margin-bottom: 15px;
+  width: 100%;
+  display: block;
+  clear: both;
 }
 .custom-button button {
   width: 70%;

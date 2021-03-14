@@ -1,13 +1,4 @@
 const mywallet = JSON.parse(localStorage.getItem('mywallet') || '{}');
-function addClass(el, className) {
-  el.setAttribute('class', el.getAttribute('class') + ' ' + className);
-}
-function eachRow(callback) {
-  document.querySelectorAll('table tbody tr').forEach((tr) => {
-    const coin = tr.getAttribute('data-coin');
-    callback(coin, tr);
-  });
-}
 
 function addButton(coin, tr, type) {
   if (coin) {
@@ -15,7 +6,8 @@ function addButton(coin, tr, type) {
     btn.setAttribute('class', 'btn btn-default btn-sm');
     btn.style.marginRight = '10px';
     btn.innerText = type.toUpperCase();
-    btn.setAttribute('href', '/' + type.toLowerCase() + '/' + coin);
+    btn.href = '/' + type.toLowerCase() + '/' + coin;
+    btn.target = '__blank';
     const buttons = tr.querySelectorAll('.btn');
     if (buttons[0]) {
       buttons[0].innerText = 'WALLET';
@@ -37,7 +29,6 @@ function updateData(coin, tr) {
     const changed = +(value - last).toFixed(1);
     const color = changed > 0 ? 'green' : 'red';
     if (changed !== 0) {
-      console.log(coin, changed);
       const span = document.createElement('span');
       span.style = `color:${color}; float:right`;
       span.innerHTML = changed > 0 ? '+' + changed : changed;
@@ -53,36 +44,12 @@ function updateData(coin, tr) {
     value,
     rate,
   };
-  const d = date.getDay();
+  const d = date.getDate();
   mywallet[coin][d] = mywallet[coin][d] || {};
   mywallet[coin][d][date.getHours()] = {
     value,
     rate,
   };
-}
-
-function getOpenOrders(callback) {
-  fetch('https://www.coinspot.com.au/my/orders/open')
-    .then((x) => x.text())
-    .then((html) => {
-      const div = document.createElement('div');
-      div.id = 'virtualbacon';
-      div.innerHTML = html;
-      document.querySelector('body').appendChild(div);
-
-      const table = document.querySelectorAll('#virtualbacon table');
-      const tr = table[1].querySelectorAll('tbody tr');
-      const data = [];
-      tr.forEach((el) => {
-        const row = [];
-        el.querySelectorAll('td').forEach((td) =>
-          row.push(td.innerText.trim()),
-        );
-        const [date, coin, type, amount, trigger, total] = row;
-        data.push({ date, coin, type, amount, trigger, total });
-      });
-      callback(data);
-    });
 }
 
 function withOpenOrder(coin, tr, orders) {
@@ -104,14 +71,14 @@ function withOpenOrder(coin, tr, orders) {
   }
 }
 
-function addOrderFilter() {
+function addOrderFilter(count) {
+  if (count === 0) return;
   const row = document.querySelector('.hidezero').parentElement;
   addClass(row, 'modified');
-  const el = document.createElement('div');
-  addClass(el, 'filter-wrapper');
+  const el = createElement('div', 'filter-wrapper');
   const chk = document.createElement('input', { type: 'checkbox' });
   chk.setAttribute('type', 'checkbox');
-  el.innerText = 'Show only orders';
+  el.innerText = 'Show only ' + count + ' orders';
   chk.addEventListener('change', (e) => {
     console.log('channed', e.target.checked);
     const panel = document.querySelector('body');
@@ -128,15 +95,17 @@ function addOrderFilter() {
   el.appendChild(chk);
   row.appendChild(el);
 }
+
 eachRow((coin, tr) => addButton(coin, tr, 'sell'));
 eachRow((coin, tr) => addButton(coin, tr, 'buy'));
+eachRow(updateRank);
+
 setTimeout(() => {
   eachRow((coin, tr) => updateData(coin, tr));
   localStorage.setItem('mywallet', JSON.stringify(mywallet));
 
   getOpenOrders((orders) => {
+    addOrderFilter(orders.length);
     eachRow((coin, tr) => withOpenOrder(coin, tr, orders));
   });
 }, 1000);
-
-addOrderFilter();

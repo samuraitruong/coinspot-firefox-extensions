@@ -38,7 +38,7 @@
   display: table-row !important;
 }
 .modified {
-  width: 300px;
+  width: 310px;
 }
 .addon-filters {
   display: inline;
@@ -49,4 +49,9 @@
   width: 50%;
   float: left;
   margin-top: 8px;
+}
+.rank-text {
+  font-size: 9px;
+  color: rgb(65, 62, 62);
+  padding-top: 6px;
 }

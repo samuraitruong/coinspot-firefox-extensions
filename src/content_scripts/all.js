@@ -15,13 +15,6 @@ function formatNumber(numValue, prefix = true) {
   );
 }
 
-function fetchDashboadData(typeframe, callback) {
-  fetch(
-    'https://www.coinspot.com.au/my/charts/portfolio?timeframe=' + typeframe,
-  )
-    .then((res) => res.json())
-    .then(callback);
-}
 let wrapper = null;
 
 function showWalletValue(data) {
@@ -50,12 +43,41 @@ function showWalletValue(data) {
     changeHtml;
 }
 
+function reloadIfSet() {
+  const interval =
+    +localStorage.getItem('refresh_' + document.location.href) || 0;
+  if (interval > 0) {
+    setInterval(() => {
+      document.location.reload();
+    }, interval * 1000);
+    if (chrome) {
+      chrome.runtime.sendMessage({ type: 'setIcon' });
+    }
+  }
+}
+
+function updateHeaderWithCoinRank() {
+  const coin = currentCoin();
+  const coinList = JSON.parse(localStorage.getItem('coin_list') || '[]');
+  const findCoin = coinList.find(
+    (x) => x.coin.toLowerCase() === coin.toLocaleLowerCase(),
+  );
+  if (findCoin) {
+    document.querySelector('.pophelp').innerHTML =
+      document.querySelector('.pophelp').innerHTML + '  #' + findCoin.index;
+  }
+}
+
 fetchDashboadData('D', showWalletValue);
 
 setInterval(() => {
   fetchDashboadData('D', showWalletValue);
 }, 30000);
 
+updateHeaderWithCoinRank();
+
 // chrome.runtime.onMessage.addListener(function (request, sender) {
-//   console.log('message from background', request.message);
+//   console.log('message from background', request.message, sender);
 // });
+
+reloadIfSet();

@@ -19,14 +19,47 @@ function runScriptOnContentPage(days) {
       .catch((err) => alert(err));
   }
 }
+document.querySelector('#btnRefreshButton').addEventListener('click', () => {
+  const value = +document.querySelector('#refreshInterval').value;
+
+  if (chrome) {
+    chrome.tabs.executeScript(
+      {
+        code: `localStorage.setItem("refresh_" +document.location.href, ${value})`,
+      },
+      (err) => {
+        console.log(err);
+      },
+    );
+  }
+});
 
 document.querySelectorAll('button').forEach((el) => {
   let period = el.getAttribute('data-period');
-  el.addEventListener('click', () => {
-    if (period === 'custom') {
-      period = document.querySelector('#custom').value;
-    }
+  if (period) {
+    el.addEventListener('click', () => {
+      if (period === 'custom') {
+        period = document.querySelector('#custom').value;
+      }
 
-    runScriptOnContentPage(+period);
-  });
+      runScriptOnContentPage(+period);
+    });
+  }
 });
+
+window.onload = () => {
+  if (chrome) {
+    chrome.tabs.executeScript(
+      {
+        code: `localStorage.getItem('refresh_' + document.location.href)`,
+      },
+      (result, err) => {
+        console.log(result, err);
+        document.querySelector('#refreshInterval').value = result[0] || '0';
+        if (result[0]) {
+          chrome.browserAction.setIcon({ path: icon });
+        }
+      },
+    );
+  }
+};
