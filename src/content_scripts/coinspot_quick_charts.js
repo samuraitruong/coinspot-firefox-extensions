@@ -29,16 +29,71 @@ function addWalletMenu(coin) {
   document.querySelector('.bssheader .row').appendChild(div);
 }
 
-getWaletPage(coin, (data) => {
+function showTradeHistory(data) {
+  const btn = createElement('button', 'pull-right btn btn-default btn-sm ml-1');
+  btn.innerText = 'Trade Logs';
+  document
+    .querySelector('.page-header .hidden-xs')
+    .insertBefore(btn, document.querySelector('.page-header .hidden-xs a'));
+
+  const div = createElement('div', 'floatting-trade-list hide');
+  const rows = [
+    ['Date', 'Type', 'Amount', 'Rate ex. fee', 'Total'],
+    ...data.orders.map((x) => Object.values(x)),
+  ];
+  const closeSpan = createElement('span', 'close');
+
+  closeSpan.innerText = 'close';
+
+  div.appendChild(closeSpan);
+
+  const h2 = createElement('h2');
+  h2.innerText = 'Trade history';
+  div.appendChild(h2);
+  rows.forEach((row) => {
+    const rowEL = createElement('div', 'inner-row');
+    row.forEach((col) => {
+      const colEl = createElement('span');
+      colEl.innerText = col;
+      rowEL.appendChild(colEl);
+    });
+    div.appendChild(rowEL);
+  });
+
+  document.querySelector('body').appendChild(div);
+  closeSpan.addEventListener('click', (e) => {
+    toggleClass(div, 'hide');
+  });
+  btn.addEventListener('click', () => {
+    toggleClass(div, 'hide');
+  });
+}
+
+getTradeHistory(coin, (data) => {
   if (data.orders.length > 0) {
+    showTradeHistory(data);
     addMiniChart(coin, data.orders[0].date, rightPanel);
     const sells = data.orders
       .filter((x) => x.type === 'Sell')
       .map((x) => x.amount);
-    const currentInvest = data.orders
-      .filter((x) => !sells.includes(x.amount))
-      .map((x) => +x.total.replace('AUD', ''))
-      .reduce((a, b) => a + b, 0);
+    const balance = data.orders.reduce((amount, item) => {
+      switch (item.type) {
+        case 'Sell':
+          return amount - +item.amount;
+        case 'Buy':
+        case 'Buy (Swap)':
+          return amount + +item.amount;
+      }
+      return amount;
+    }, 0);
+    console.log('Current balance: ', balance);
+    const currentInvest =
+      balance > 0
+        ? data.orders
+            .filter((x) => !sells.includes(x.amount))
+            .map((x) => +x.total.replace('AUD', ''))
+            .reduce((a, b) => a + b, 0)
+        : 0;
     const insertDiv = (hostClass) => {
       const infoDiv = document.createElement('div');
       infoDiv.style.color = 'green';

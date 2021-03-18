@@ -1,3 +1,5 @@
+const mybrowser = chrome || browser;
+
 function toNumber(x) {
   if (!isNaN(x)) return x;
   if (x === 0) return 0;
@@ -50,9 +52,10 @@ function reloadIfSet() {
     setInterval(() => {
       document.location.reload();
     }, interval * 1000);
-    if (chrome) {
-      chrome.runtime.sendMessage({ type: 'setIcon' });
-    }
+
+    mybrowser.runtime.sendMessage({ type: 'setIcon' });
+  } else {
+    mybrowser.runtime.sendMessage({ type: 'removeIcon' });
   }
 }
 
@@ -75,9 +78,5 @@ setInterval(() => {
 }, 30000);
 
 updateHeaderWithCoinRank();
-
-// chrome.runtime.onMessage.addListener(function (request, sender) {
-//   console.log('message from background', request.message, sender);
-// });
 
 reloadIfSet();

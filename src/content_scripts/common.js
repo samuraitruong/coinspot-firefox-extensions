@@ -40,15 +40,15 @@ function fetchDashboadData(typeframe, callback) {
     .then(callback);
 }
 
-function getWaletPage(coin, callback) {
-  fetch('https://www.coinspot.com.au/my/wallet/' + coin)
+function getTradeHistory(coin, callback) {
+  fetch('https://www.coinspot.com.au/my/wallet/' + coin + '/tradehistory')
     .then((x) => x.text())
     .then((html) => {
       var div = document.createElement('div');
       div.setAttribute('class', 'wallet-page');
       div.innerHTML = html;
       document.querySelector('body').appendChild(div);
-      const orderHistory = document.querySelectorAll('table')[2];
+      const orderHistory = document.querySelectorAll('table')[0];
       if (orderHistory) {
         const orders = [];
         orderHistory.querySelectorAll('tr').forEach((el) => {

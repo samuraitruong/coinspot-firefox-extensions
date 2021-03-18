@@ -3,7 +3,10 @@ if (chrome) {
     console.log('Received %o from %o, frame', msg, sender.tab, sender.frameId);
     switch (msg.type) {
       case 'setIcon':
-        chrome.browserAction.setIcon({ path: '/icons/48x48.png' });
+        chrome.browserAction.setIcon({ path: '/icons/32x32.png' });
+        break;
+      case 'removeIcon':
+        chrome.browserAction.setIcon({ path: '/icons/32x32-gray.png' });
         break;
     }
     sendResponse('OK');

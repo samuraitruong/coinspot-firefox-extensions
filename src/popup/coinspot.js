@@ -1,3 +1,4 @@
+const mybrowser = chrome || browser;
 function runScriptOnContentPage(days) {
   if (chrome) {
     chrome.tabs.executeScript(
@@ -19,6 +20,7 @@ function runScriptOnContentPage(days) {
       .catch((err) => alert(err));
   }
 }
+
 document.querySelector('#btnRefreshButton').addEventListener('click', () => {
   const value = +document.querySelector('#refreshInterval').value;
 
@@ -28,6 +30,7 @@ document.querySelector('#btnRefreshButton').addEventListener('click', () => {
         code: `localStorage.setItem("refresh_" +document.location.href, ${value})`,
       },
       (err) => {
+        window.close();
         console.log(err);
       },
     );
@@ -43,6 +46,7 @@ document.querySelectorAll('button').forEach((el) => {
       }
 
       runScriptOnContentPage(+period);
+      window.close();
     });
   }
 });
@@ -61,5 +65,17 @@ window.onload = () => {
         }
       },
     );
+  }
+  if (browser) {
+    browser.tabs
+      .executeScript({
+        code: `localStorage.getItem('refresh_' + document.location.href)`,
+      })
+      .then((result) => {
+        document.querySelector('#refreshInterval').value = result[0] || '0';
+        if (result[0]) {
+          browser.browserAction.setIcon({ path: icon });
+        }
+      });
   }
 };

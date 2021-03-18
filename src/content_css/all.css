@@ -55,3 +55,40 @@
   color: rgb(65, 62, 62);
   padding-top: 6px;
 }
+
+.floatting-trade-list {
+  position: fixed;
+  top: 170px;
+  right: 10px;
+  width: 600px;
+  background-color: #0073dd;
+  color: #fff;
+  padding: 10px 15px 15px 15px;
+  -webkit-box-shadow: -14px 14px 40px 0px rgba(247, 244, 247, 1);
+  -moz-box-shadow: -14px 14px 40px 0px rgba(247, 244, 247, 1);
+  box-shadow: -14px 14px 40px 0px rgba(247, 244, 247, 1);
+}
+.floatting-trade-list .close {
+  position: absolute;
+  top: 5px;
+  right: 15px;
+  cursor: pointer;
+  color: #fff;
+}
+.floatting-trade-list h2 {
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 14px;
+  color: #fff !important;
+}
+.floatting-trade-list .inner-row {
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+  color: #fff;
+  border-bottom: dashed 1px #999;
+  padding: 18px 0px;
+}
+.inner-row span {
+  flex: 1 0 20%;
+}
