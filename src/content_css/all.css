@@ -31,6 +31,9 @@
   color: #e25c1e;
 }
 
+.order.Buy {
+  color: rgb(243, 17, 149);
+}
 .addon-filtered-order tbody tr {
   display: none !important;
 }
@@ -91,4 +94,8 @@
 }
 .inner-row span {
   flex: 1 0 20%;
+}
+
+.held-order {
+  margin-top: 5px;
 }

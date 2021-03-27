@@ -11,8 +11,16 @@ function createFloattingDiv(className) {
 }
 
 function addMiniChart(coin, d, panel) {
+  const el = document.querySelector('h1.pophelp').getBoundingClientRect();
+  const left = el.left;
+  if (left < 250) {
+    return;
+  }
+  const w = Math.floor(left - 20);
+  const h = Math.floor(0.35 * w);
+
   const chartDiv = document.createElement('div');
-  chartDiv.innerHTML = `<img title="${d} days charts" alt="chart" src="https://coinspot-chart.herokuapp.com/chart?coin=${coin}&width=280&height=100&period=${d}&lineWidth=1" />`;
+  chartDiv.innerHTML = `<img title="${d} days charts" alt="chart" src="https://coinspot-chart.herokuapp.com/chart?coin=${coin}&width=${w}&height=${h}&period=${d}&lineWidth=1" />`;
   panel.appendChild(chartDiv);
 }
 
@@ -105,6 +113,52 @@ getTradeHistory(coin, (data) => {
     };
     insertDiv('.howmuchcoin');
     insertDiv('.howmuchaud');
+  }
+});
+
+getOpenOrders((data) => {
+  const todayPrice = +document
+    .querySelector('.price-title')
+    .innerText.replace('$', '');
+
+  const orders = [
+    data.openSellOrders.find(
+      (x) => x.coin && x.coin.toUpperCase() === coin.toUpperCase(),
+    ),
+    data.openBuyOrders.find(
+      (x) => x.coin && x.coin.toUpperCase() === coin.toUpperCase(),
+    ),
+  ].filter(Boolean);
+  console.log(orders);
+  if (orders.length > 0) {
+    const el = document.querySelector('.alert-always');
+    orders.forEach((order) => {
+      const div = createElement('div', '.held-order');
+      const trigger = +order.trigger.replace('$', '');
+
+      const percentage = (((trigger - todayPrice) * 100) / trigger).toFixed(1);
+      div.innerText = `- ${order.type} : ${order.trigger} x ${order.amount}  =  ${order.total} AUD   (${percentage}%)`;
+      div.addEventListener('click', (e) => {
+        const el = document.querySelector('#buyamount, #sellamount');
+        console.log(el);
+        el.value = order.amount;
+      });
+      const cancelBtn = createElement(
+        'a',
+        'cancel-order-button btn btn-small btn-danger pull-right',
+      );
+      cancelBtn.addEventListener(
+        'click',
+        cancelOrder(order, (successful) => {
+          console.log('Cancel order ', order, successful);
+          document.location.reload();
+        }),
+      );
+
+      cancelBtn.innerText = 'Cancel';
+      div.appendChild(cancelBtn);
+      el.appendChild(div);
+    });
   }
 });
 addWalletMenu(coin);

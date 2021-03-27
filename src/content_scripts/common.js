@@ -73,6 +73,10 @@ function getSellRate(coin, amount, callback) {
 }
 
 function getOpenOrders(callback) {
+  if (window.getOpenOrdersData) {
+    callback(window.getOpenOrdersData);
+    return;
+  }
   fetch('https://www.coinspot.com.au/my/orders/open')
     .then((x) => x.text())
     .then((html) => {
@@ -81,18 +85,36 @@ function getOpenOrders(callback) {
       div.innerHTML = html;
       document.querySelector('body').appendChild(div);
 
-      const table = document.querySelectorAll('#virtualbacon table');
-      const tr = table[1].querySelectorAll('tbody tr');
-      const data = [];
-      tr.forEach((el) => {
-        const row = [];
-        el.querySelectorAll('td').forEach((td) =>
-          row.push(td.innerText.trim()),
-        );
-        const [date, coin, type, amount, trigger, total] = row;
-        data.push({ date, coin, type, amount, trigger, total });
+      const tables = document.querySelectorAll('#virtualbacon table');
+      const allTables = [];
+      tables.forEach((tb) => {
+        const tr = tb.querySelectorAll('tbody tr');
+        const data = [];
+        tr.forEach((el) => {
+          const row = [];
+          el.querySelectorAll('td').forEach((td) =>
+            row.push(td.innerText.trim()),
+          );
+          // get form
+          const form = {
+            data: {},
+            action: el.querySelector('form')?.getAttribute('action'),
+          };
+          el.querySelectorAll('form input').forEach((input) => {
+            form.data[input.name] = input.value;
+          });
+          const [date, coin, type, amount, trigger, total] = row;
+          data.push({ date, coin, type, amount, trigger, total, form });
+        });
+        allTables.push(data);
       });
-      callback(data);
+      const [marketOrders, openSellOrders, openBuyOrders] = allTables;
+      window.getOpenOrdersData = {
+        marketOrders,
+        openSellOrders,
+        openBuyOrders,
+      };
+      callback(window.getOpenOrdersData);
       div.remove();
     });
 }
@@ -137,4 +159,45 @@ function updateRank(coin, tr) {
         .replace(/\s/gi, '-');
     tr.querySelector('td').appendChild(span);
   }
+}
+
+function cancelOrder(item, callback) {
+  return (e) => {
+    const { action, data } = item.form;
+
+    fetch(action, {
+      headers: {
+        'accept':
+          'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+        'accept-language': 'en-GB,en-US;q=0.9,en;q=0.8',
+        'cache-control': 'no-cache',
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'pragma': 'no-cache',
+        'sec-ch-ua':
+          '"Google Chrome";v="89", "Chromium";v="89", ";Not A Brand";v="99"',
+        'sec-ch-ua-mobile': '?0',
+        'sec-fetch-dest': 'document',
+        'sec-fetch-mode': 'navigate',
+        'sec-fetch-site': 'same-origin',
+        'sec-fetch-user': '?1',
+        'upgrade-insecure-requests': '1',
+      },
+      referrer: 'https://www.coinspot.com.au/my/orders/open',
+      referrerPolicy: 'same-origin',
+      body: '_csrf=&redirect=%2Fmy%2Forders%2Fopen%23s&id=' + data.id,
+      method: 'POST',
+      mode: 'cors',
+      credentials: 'include',
+    })
+      .then((res) => res.text())
+      .then((html) => {
+        if (html.includes('cancel request sent successfully.')) {
+          console.log('cancel request sent successfully.');
+          return callback(true);
+        }
+        callback();
+      });
+    return false;
+  };
+  //
 }

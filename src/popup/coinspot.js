@@ -1,19 +1,15 @@
-const mybrowser = chrome || browser;
 function runScriptOnContentPage(days) {
+  const options = {
+    file: '/content_scripts/coinspot_1.js',
+  };
+
   if (chrome) {
-    chrome.tabs.executeScript(
-      {
-        file: '/content_scripts/coinspot_1.js',
-      },
-      (err) => {
-        chrome.tabs.executeScript({ code: `insertChart(${days})` });
-      },
-    );
+    chrome.tabs.executeScript(options, (err) => {
+      chrome.tabs.executeScript({ code: `insertChart(${days})` });
+    });
   } else {
     browser.tabs
-      .executeScript({
-        file: '/content_scripts/coinspot_1.js',
-      })
+      .executeScript(options)
       .then(() => {
         browser.tabs.executeScript({ code: `insertChart(${days})` });
       })
@@ -46,12 +42,13 @@ document.querySelectorAll('button').forEach((el) => {
       }
 
       runScriptOnContentPage(+period);
-      window.close();
+      setTimeout(() => window.close(), 2000);
     });
   }
 });
 
 window.onload = () => {
+  //const icon ='/icons/32x32.png'
   if (chrome) {
     chrome.tabs.executeScript(
       {
@@ -60,9 +57,9 @@ window.onload = () => {
       (result, err) => {
         console.log(result, err);
         document.querySelector('#refreshInterval').value = result[0] || '0';
-        if (result[0]) {
-          chrome.browserAction.setIcon({ path: icon });
-        }
+        // if (result[0]) {
+        //   chrome.browserAction.setIcon({ path: icon });
+        // }
       },
     );
   }
@@ -73,9 +70,9 @@ window.onload = () => {
       })
       .then((result) => {
         document.querySelector('#refreshInterval').value = result[0] || '0';
-        if (result[0]) {
-          browser.browserAction.setIcon({ path: icon });
-        }
+        // if (result[0]) {
+        //   browser.browserAction.setIcon({ path: icon });
+        // }
       });
   }
 };

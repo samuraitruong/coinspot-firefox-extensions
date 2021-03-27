@@ -8,6 +8,10 @@ function addButton(coin, tr, type) {
     btn.innerText = type.toUpperCase();
     btn.href = '/' + type.toLowerCase() + '/' + coin;
     btn.target = '__blank';
+    btn.addEventListener('click', (e) => {
+      e.cancelBubble = true;
+    });
+
     const buttons = tr.querySelectorAll('.btn');
     if (buttons[0]) {
       buttons[0].innerText = 'WALLET';
@@ -62,7 +66,8 @@ function withOpenOrder(coin, tr, orders) {
     link.setAttribute('class', 'order ' + findCoin.type);
     link.setAttribute('href', '/my/orders/open');
     link.setAttribute('target', '_blank');
-    link.innerText = findCoin.type + ':  ' + findCoin.total;
+    link.innerText =
+      findCoin.type + ' at ' + findCoin.trigger + ' = ' + findCoin.total;
     link.addEventListener('click', (e) => {
       e.cancelBubble = true;
     });
@@ -104,7 +109,8 @@ setTimeout(() => {
   eachRow((coin, tr) => updateData(coin, tr));
   localStorage.setItem('mywallet', JSON.stringify(mywallet));
 
-  getOpenOrders((orders) => {
+  getOpenOrders(({ openSellOrders, openBuyOrders }) => {
+    const orders = [...openSellOrders, ...openBuyOrders];
     addOrderFilter(orders.length);
     eachRow((coin, tr) => withOpenOrder(coin, tr, orders));
   });
