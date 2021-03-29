@@ -53,6 +53,17 @@
     },
     {
       "matches": [
+        "https://www.coinspot.com.au/buylimit/*"
+      ],
+      "js": [
+        "/content_scripts/order_buy.js"
+      ],
+      "css": [
+        "/content_css/order_buy.css"
+      ]
+    },
+    {
+      "matches": [
         "https://www.coinspot.com.au/takeprofit/*"
       ],
       "js": [

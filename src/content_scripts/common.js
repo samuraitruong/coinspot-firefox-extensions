@@ -72,6 +72,12 @@ function getSellRate(coin, amount, callback) {
     .then(callback);
 }
 
+function getBuyRate(coin, amount, callback) {
+  fetch('https://www.coinspot.com.au/buy/' + coin.toUpperCase() + '/rate')
+    .then((x) => x.json())
+    .then(callback);
+}
+
 function getOpenOrders(callback) {
   if (window.getOpenOrdersData) {
     callback(window.getOpenOrdersData);
@@ -119,6 +125,39 @@ function getOpenOrders(callback) {
     });
 }
 
+function getLastPrice(coin, callback) {
+  const url =
+    'https://www.coinspot.com.au/charts/latestprice?symbol=' +
+    coin.toUpperCase();
+  fetch(url)
+    .then((res) => res.json())
+    .then(callback);
+}
+
+function getBuyHistory(coin, minutes, callback) {
+  const now = new Date().getTime();
+
+  const start = now - minutes * 60 * 1000;
+
+  fetch(
+    `https://www.coinspot.com.au/charts/history_basic?symbol=${coin.toUpperCase()}&from=${start}&to=${now}`,
+  )
+    .then((x) => x.json())
+    .then((json) => {
+      callback(json);
+    });
+}
+
+function getBuyData(coin, minutes, callback) {
+  getBuyHistory(coin, minutes, (data) => {
+    const price = data.map((x) => x[1]);
+
+    callback({
+      min: Math.min(...price),
+      max: Math.max(...price),
+    });
+  });
+}
 function getSaleHistory(coin, minutes, callback) {
   const now = new Date().getTime();
 
@@ -165,7 +204,7 @@ function cancelOrder(item, callback) {
   return (e) => {
     const { action, data } = item.form;
 
-    fetch(action, {
+    fetch('https://www.coinspot.com.au' + action, {
       headers: {
         'accept':
           'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',

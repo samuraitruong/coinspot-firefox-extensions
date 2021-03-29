@@ -27,7 +27,7 @@ function addSelectors(page) {
   el.setAttribute('class', 'selector-list');
 
   const setup = {
-    stoploss: [80, 85, 90, 92, 94, 96, 98, 99],
+    stoploss: [60, 65, 70, 75, 80, 85, 90, 92, 94, 96, 98, 99],
     takeprofit: [20, 30, 50, 75, 100, 125, 150, 200, 300, 500],
   };
   setup[page].forEach((p) => {
@@ -39,6 +39,7 @@ function addSelectors(page) {
   });
   container.appendChild(el);
 }
+
 const arr = document.location.href.split('/');
 
 addSelectors(arr[3]);

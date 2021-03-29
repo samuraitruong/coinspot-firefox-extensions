@@ -13,11 +13,11 @@ function createFloattingDiv(className) {
 function addMiniChart(coin, d, panel) {
   const el = document.querySelector('h1.pophelp').getBoundingClientRect();
   const left = el.left;
-  if (left < 250) {
-    return;
-  }
-  const w = Math.floor(left - 20);
-  const h = Math.floor(0.35 * w);
+  // if (left < 250) {
+  //   return;
+  // }
+  const w = 280; // Math.floor(left - 20);
+  const h = 100; //Math.floor(0.35 * w);
 
   const chartDiv = document.createElement('div');
   chartDiv.innerHTML = `<img title="${d} days charts" alt="chart" src="https://coinspot-chart.herokuapp.com/chart?coin=${coin}&width=${w}&height=${h}&period=${d}&lineWidth=1" />`;

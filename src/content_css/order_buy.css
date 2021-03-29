@@ -1,0 +1,15 @@
+.selector-list {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+.selector-list a {
+  font-size: 11px;
+  cursor: pointer;
+  margin-left: 5px;
+}
+.selector-list a:hover,
+.selector-list a.addon-selected {
+  font-weight: bolder;
+  border-bottom: solid 0.8px;
+}
