@@ -13,3 +13,16 @@
   font-weight: bolder;
   border-bottom: solid 0.8px;
 }
+
+.buy-percentage {
+  position: absolute;
+  background: #0073dd !important;
+  color: #fff;
+  top: 1px;
+  right: 66px;
+  z-index: 50;
+  width: 64px;
+  display: block;
+  height: 42px;
+  padding: 12px 6px;
+}

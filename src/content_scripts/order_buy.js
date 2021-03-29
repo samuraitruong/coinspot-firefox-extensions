@@ -22,6 +22,7 @@ function onSelect(e) {
         data.marketDisplayRateFormatted;
     });
   }
+  onInputChange();
   return false;
 }
 
@@ -59,6 +60,7 @@ function addSelectors(page) {
     ],
     takeprofit: [20, 30, 50, 75, 100, 125, 150, 200, 300, 500],
   };
+
   setup[page].forEach((p) => {
     const link = document.createElement('a');
     link.innerText = p.toString().includes('d') ? p : `${p}%`;
@@ -68,7 +70,29 @@ function addSelectors(page) {
   });
   container.appendChild(el);
 }
+function onInputChange(e) {
+  const input = document.querySelector('.buyprice');
 
+  let span = document.querySelector('.buy-percentage');
+
+  if (!span) {
+    span = createElement('span', 'buy-percentage');
+    input.parentElement.appendChild(span);
+  }
+
+  const inputValue = +input.value;
+  const currentPrice = +document
+    .querySelector('.price-title span')
+    .innerText.replace('$', '');
+  const percentageChange = (
+    ((inputValue - currentPrice) * 100) /
+    currentPrice
+  ).toFixed(1);
+  span.innerText = percentageChange + '%';
+}
 const arr = document.location.href.split('/');
 
 addSelectors(arr[3]);
+
+document.querySelector('.buyprice').addEventListener('change', onInputChange);
+document.querySelector('.buyprice').addEventListener('keyup', onInputChange);
