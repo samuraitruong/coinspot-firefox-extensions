@@ -1,4 +1,6 @@
-## what it does
+## Introduction
+
+This is a very simple chrome/firefox extension to enriched feature for coinspot.com.au
 - add small chart on this list view
 - auto add mini chart on buy/sell
 - auto click max-sell button when you are on sell page (just for my purpose)
