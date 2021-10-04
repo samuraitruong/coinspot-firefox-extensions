@@ -36,4 +36,4 @@ This is a very simple chrome/firefox extension to enriched feature for coinspot.
   
 
 ## Permanently install for firefox
-- Download file in packages/ folder and click it
+- Download file in at [https://github.com/samuraitruong/coinspot-firefox-extensions/tree/master/packages](https://github.com/samuraitruong/coinspot-firefox-extensions/tree/master/packages) then double clck on the file, Firefox will then trigger the installer 
