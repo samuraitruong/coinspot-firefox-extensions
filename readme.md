@@ -14,7 +14,6 @@ This is a very simple chrome/firefox extension to enriched feature for coinspot.
 ![screenshot2](https://github.com/samuraitruong/coinspot-firefox-extensions/blob/master/screenshots/screenshot3.png?raw=true)
 
 
-
 ## WIP
 - Add setting page
 - Allow auto configure and send alert (telegram)
